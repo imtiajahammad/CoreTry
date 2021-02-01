@@ -1,0 +1,37 @@
+﻿@model CoreTry.ViewModels.HomeDetailsViewModel;
+
+    <h1>Details.cshtml from Views/Home</h1>
+    <div>@ViewBag.something</div>
+    @*<h3>@ViewData["PageTitle"]</h3>*@
+
+
+    @{
+        //var employee = ViewData["Employee"] as EmployeeManagement.Controllers.Models.Employee;
+    }
+
+    @*<div>
+        Name: @employee.Name
+    </div>
+    <div>
+        Department: @employee.Department
+    </div>
+    <div>
+        Email: @employee.Email
+    </div>*@
+    <hr />
+
+    <div>
+        Name: @Model.Employee.Name
+    </div>
+    <div>
+        Department: @Model.Employee.Department
+    </div>
+    <div>
+        Email: @Model.Employee.Email
+    </div>
+
+
+
+@section Scripts{ 
+<script src="somejs"></script>
+}

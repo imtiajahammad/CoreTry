@@ -1,0 +1,63 @@
+﻿@model IEnumerable<CoreTry.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id @*@Html.DisplayNameFor(model => model.Id)*@
+            </th>
+            <th>
+                Name@*@Html.DisplayNameFor(model => model.Name)*@
+            </th>
+            <th>
+                Email @*@Html.DisplayNameFor(model => model.Email)*@
+            </th>
+            <th>
+                Department @*@Html.DisplayNameFor(model => model.Department)*@
+            </th>
+            <th>
+                Action 
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                <a asp-controller="Home" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit0</a>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
+                @Html.ActionLink("Details", "Get", new { id = item.Id }) |
+                <a href="/home/get/@item.Id" class="btn btn-primary">Details</a> |
+                <a href="@Url.Action("Get","home",new { id = item.Id })" class="btn btn-primary">Details2</a> |
+                <a asp-controller="home" asp-action="Get" asp-route-id="@item.Id" class="btn btn-primary">
+                    details3
+                </a>
+                @Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

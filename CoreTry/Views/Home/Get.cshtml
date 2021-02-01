@@ -1,0 +1,26 @@
+﻿@model CoreTry.ViewModels.HomeDetailsViewModel;
+
+@{ 
+    ViewBag.Title = "Employee Details";
+    var photoPath = "~/Images/" + (Model.Employee.PhotoPath ?? "desktopImage.jpg");
+}
+
+
+<hr />
+
+<div>
+    Name: @Model.Employee.Name
+</div>
+<div>
+    Department: @Model.Employee.Department
+</div>
+<div>
+    Email: @Model.Employee.Email
+</div>
+<div>
+    <img style="width:20%;height:20%" class="card-img-top" src="@photoPath" asp-append-version="true"  />
+</div>
+
+<br />
+@Html.ActionLink("Home", "Index", new { /* id=item.PrimaryKey */ })
+<a asp-controller="home" asp-action="index" class="btn btn-primary">back</a>

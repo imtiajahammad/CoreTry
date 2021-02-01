@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "_Layout";
+}
+<h3>
+    this _ViewStart overrites the _VierStart in the Views
+</h3>
+
+
+@*@{ 
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_NonAdminLayout";
+    }
+}*@
+
