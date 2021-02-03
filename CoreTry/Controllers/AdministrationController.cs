@@ -13,7 +13,8 @@ using Microsoft.Extensions.Logging;
 
 namespace CoreTry.Controllers
 {
-    [Authorize(Roles = "ADMIN,NGB-ADMIN")]
+    //[Authorize(Roles = "ADMIN,NGB-ADMIN")]
+    [Authorize(Policy = "AdminRolePolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -266,7 +267,7 @@ namespace CoreTry.Controllers
             }
         }
         [HttpPost]
-        //[Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")] 
         [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string id)
         {

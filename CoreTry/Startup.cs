@@ -58,6 +58,8 @@ namespace CoreTry
                 options.AddPolicy("DeleteRolePolicy", 
                     policy => policy.RequireClaim("Delete Role")
                                     .RequireClaim("Create Role"));
+                options.AddPolicy("AdminRolePolicy",
+                    policy => policy.RequireRole("ADMIN,NGB-ADMIN"));
             });
             //services.AddMvc().AddXmlSerializerFormatters();//to get xml format
             //services.AddMvcCore();
