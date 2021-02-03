@@ -53,6 +53,12 @@ namespace CoreTry
                                 .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy", 
+                    policy => policy.RequireClaim("Delete Role")
+                                    .RequireClaim("Create Role"));
+            });
             //services.AddMvc().AddXmlSerializerFormatters();//to get xml format
             //services.AddMvcCore();
             //services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
