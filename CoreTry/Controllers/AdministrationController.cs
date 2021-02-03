@@ -13,8 +13,8 @@ using Microsoft.Extensions.Logging;
 
 namespace CoreTry.Controllers
 {
-    //[Authorize(Roles = "ADMIN,NGB-ADMIN")]
-    [Authorize(Policy = "AdminRolePolicy")]
+    [Authorize(Roles = "ADMIN,NGB-ADMIN")]
+    //[Authorize(Policy = "AdminRolePolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -66,6 +66,7 @@ namespace CoreTry.Controllers
             return View(roles);
         }
         [HttpGet]
+        //[Authorize(Policy ="EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             var role =await _roleManager.FindByIdAsync(id);
@@ -89,6 +90,7 @@ namespace CoreTry.Controllers
             return View(model);
         }
         [HttpPost]
+        //[Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await _roleManager.FindByIdAsync(model.Id);
