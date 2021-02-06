@@ -65,7 +65,7 @@ namespace CoreTry
                     policy => policy.RequireClaim("Delete Role")
                                     .RequireClaim("Create Role"));
                 options.AddPolicy("EditRolePolicy",
-                   policy => policy.RequireClaim("Edit Role"));
+                   policy => policy.RequireClaim("Edit Role", "true"));/*claim.Value is case sensative*/
                 options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("ADMIN,NGB-ADMIN"));
             });
