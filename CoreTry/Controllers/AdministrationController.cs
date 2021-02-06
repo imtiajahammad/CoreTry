@@ -430,5 +430,13 @@ namespace CoreTry.Controllers
             return RedirectToAction("EditUser", new { Id = model.UserId });
 
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            //return View("AccessDenied");
+            return RedirectToAction("AccessDenied", "Account");
+        }
     }
 }
