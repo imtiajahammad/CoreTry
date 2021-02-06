@@ -1,5 +1,6 @@
 ﻿@inject SignInManager<ApplicationUser> signInManager;
-
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService authorizationService
 <!DOCTYPE html>
 
 <html>
@@ -82,11 +83,12 @@
                     </li>
 
 
-                    @if (signInManager.IsSignedIn(User) && User.IsInRole("ADMIN"))
+                    @*@if (signInManager.IsSignedIn(User) && User.IsInRole("ADMIN"))*@
+                    @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
                     {
                         @*<li class="nav-item">
-                <a class="nav-link" asp-controller="administration" asp-action="ListRoles">Manage Roles</a>
-            </li>*@
+                                <a class="nav-link" asp-controller="administration" asp-action="ListRoles">Manage Roles</a>
+                            </li>*@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -102,8 +104,8 @@
 
                     }
                     @*<li class="nav-item">
-            <a class="nav-link" asp-controller="account" asp-action="register">Register</a>
-        </li>*@
+                            <a class="nav-link" asp-controller="account" asp-action="register">Register</a>
+                        </li>*@
                 </ul>
                 <ul class="navbar-nav ml-auto">
 

@@ -54,18 +54,32 @@ namespace CoreTry
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
 
-            services.ConfigureApplicationCookie(options=>
+            services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
             });
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("DeleteRolePolicy", 
+                options.AddPolicy("DeleteRolePolicy",
                     policy => policy.RequireClaim("Delete Role")
                                     .RequireClaim("Create Role"));
+                /*options.AddPolicy("EditRolePolicy",
+                   policy => policy
+                            .RequireRole("ADMIN")
+                            .RequireClaim("Edit Role", "true")
+                             .RequireRole("Super Admin")
+                             );*/
                 options.AddPolicy("EditRolePolicy",
-                   policy => policy.RequireClaim("Edit Role", "true"));/*claim.Value is case sensative*/
+                policy => policy.RequireAssertion(
+                                    context => context.User.IsInRole("ADMIN")
+                                    && context.User.HasClaim(
+                                                    claim => claim.Type == "Edit Role"
+                                                    && claim.Value == "true"
+                                                    )
+                                     || context.User.IsInRole("Super Admin"))
+             );
+                /*claim.Value is case sensative*/
                 options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("ADMIN,NGB-ADMIN"));
             });

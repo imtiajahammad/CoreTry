@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CoreTry.Controllers
 {
-    [Authorize(Roles = "ADMIN,NGB-ADMIN")]
+    //[Authorize(Roles = "ADMIN,NGB-ADMIN")]
     //[Authorize(Policy = "AdminRolePolicy")]
     public class AdministrationController : Controller
     {
