@@ -83,8 +83,9 @@
                     </li>
 
 
-                    @*@if (signInManager.IsSignedIn(User) && User.IsInRole("ADMIN"))*@
-                    @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                    
+                    @*@if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)*@
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("ADMIN"))
                     {
                         @*<li class="nav-item">
                                 <a class="nav-link" asp-controller="administration" asp-action="ListRoles">Manage Roles</a>

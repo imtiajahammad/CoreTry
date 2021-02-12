@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreTry.Models;
+using CoreTry.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -70,7 +71,7 @@ namespace CoreTry
                             .RequireClaim("Edit Role", "true")
                              .RequireRole("Super Admin")
                              );*/
-                options.AddPolicy("EditRolePolicy",
+               /* options.AddPolicy("EditRolePolicy",
                 policy => policy.RequireAssertion(
                                     context => context.User.IsInRole("ADMIN")
                                     && context.User.HasClaim(
@@ -78,8 +79,12 @@ namespace CoreTry
                                                     && claim.Value == "true"
                                                     )
                                      || context.User.IsInRole("Super Admin"))
-             );
+             );*/
                 /*claim.Value is case sensative*/
+
+                options.AddPolicy("EditRolePolicy",
+                policy => policy.AddRequirements(new ManageAdminRoleAndClaimsRequirement()));
+
                 options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("ADMIN,NGB-ADMIN"));
             });
@@ -87,6 +92,9 @@ namespace CoreTry
             //services.AddMvcCore();
             //services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
+
+            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+
         }
 
         // This method gets called by the ru    ntime. Use this method to configure the HTTP request pipeline.

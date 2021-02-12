@@ -305,6 +305,7 @@ namespace CoreTry.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<ActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -336,6 +337,7 @@ namespace CoreTry.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult>ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
