@@ -112,7 +112,7 @@ namespace CoreTry.Controllers
                     return View(model);
                 }
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.Email, model.Password, model.RememberMe, false);
+                    model.Email, model.Password, model.RememberMe, true);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -121,7 +121,11 @@ namespace CoreTry.Controllers
                     }
                     return RedirectToAction("index", "home");
                 }
-
+                // If account is lockedout send the use to AccountLocked view
+                if (result.IsLockedOut)
+                {
+                    return View("AccountLocked");
+                }
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
 
@@ -224,6 +228,12 @@ namespace CoreTry.Controllers
                     var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
                     if (result.Succeeded)
                     {
+                        if (await _userManager.IsLockedOutAsync(user))
+                        {
+                            await _userManager.SetLockoutEndDateAsync(user,
+                                DateTimeOffset.UtcNow);
+                        }
+
                         return View("ResetPasswordConfirmation");
                     }
                     // Display validation errors. For example, password reset token already

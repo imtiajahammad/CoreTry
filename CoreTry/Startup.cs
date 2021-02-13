@@ -44,6 +44,10 @@ namespace CoreTry
 
 
                 options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+
+
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             })
                         .AddEntityFrameworkStores<AppDbContext>()
                         .AddDefaultTokenProviders()
