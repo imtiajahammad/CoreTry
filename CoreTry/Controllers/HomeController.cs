@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreTry.Models;
+using CoreTry.Security;
 using CoreTry.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,14 +20,19 @@ namespace CoreTry.Controllers
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILogger _logger;
+        private readonly IDataProtector protector;
 
         public HomeController(IEmployeeRepository employeeRepository,
                                 IHostingEnvironment hostingEnvironment,
-                                ILogger<HomeController> logger)
+                                ILogger<HomeController> logger,
+                               IDataProtectionProvider dataProtectionProvider,
+                              DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
             _employeeRepository = employeeRepository;
             _hostingEnvironment = hostingEnvironment;
             _logger = logger;
+            this.protector = dataProtectionProvider.CreateProtector(
+               dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
         //[Route("")]
         //[Route("~/Home")]
@@ -35,20 +42,29 @@ namespace CoreTry.Controllers
         //[Route("~/")]//tilda works independently, will not take any route from class above
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index()
+        public ViewResult Index()
         {
             //var model = _employeeRepository.GetEmployee(1);
-            var model = _employeeRepository.GetAllEmployees();
+            var model = _employeeRepository.GetAllEmployees().AsEnumerable()
+                            .Select(e=>
+                            {
+                                // Encrypt the ID value and store in EncryptedId property
+                                e.EncryptedId = protector.Protect(e.Id.ToString());
+                                return e;
+                            });
             //return Json(_employeeRepository.GetEmployee(1).Name);
             return View(model);
         }
+
+
+
 
         //[Route("Home/Get/{id?}")]
         //[Route("[action]/{id?}")]//[Route("Get/{id?}")]
         //[Route("{id}")]
         [HttpGet]
         [AllowAnonymous]
-        public ViewResult Get(int? id)
+        public ViewResult Get(string id)
         {
             //throw new Exception("Error in Details View");
             _logger.LogTrace("LogTrace log");
@@ -61,16 +77,17 @@ namespace CoreTry.Controllers
             ViewData["PageTitle"] = "Details View";
             ViewData["Employee"] = model;
             ViewBag.something = "something from home/details";*/
-            Employee employee = _employeeRepository.GetEmployee(id.Value);
+            int employeeId= Convert.ToInt32(protector.Unprotect(id));
+            Employee employee = _employeeRepository.GetEmployee(employeeId);
             if (employee == null)
             {
                 Response.StatusCode = 404;
-                return View("EmployeeNotFound", id.Value);
+                return View("EmployeeNotFound", employeeId);
             }
 
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Employee = _employeeRepository.GetEmployee(id ?? 1),
+                Employee = _employeeRepository.GetEmployee(employeeId),
                 PageTitle = "Employee Details"
             };
 

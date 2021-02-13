@@ -49,7 +49,7 @@
             <td>
                 <a asp-controller="Home" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit0</a>
                 @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
-                @Html.ActionLink("Details", "Get", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Get", new { id = item.EncryptedId }) |
                 <a href="/home/get/@item.Id" class="btn btn-primary">Details</a> |
                 <a href="@Url.Action("Get","home",new { id = item.Id })" class="btn btn-primary">Details2</a> |
                 <a asp-controller="home" asp-action="Get" asp-route-id="@item.Id" class="btn btn-primary">
