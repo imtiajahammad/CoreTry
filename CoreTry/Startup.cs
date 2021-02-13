@@ -45,6 +45,11 @@ namespace CoreTry
                         .AddEntityFrameworkStores<AppDbContext>()
                         .AddDefaultTokenProviders();
 
+
+        // Set token life span to 5 hours
+        services.Configure<DataProtectionTokenProviderOptions>(o =>
+        o.TokenLifespan = TimeSpan.FromHours(5));
+
             /*services.Configure<IdentityOptions>(options=> {
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
