@@ -41,14 +41,26 @@ namespace CoreTry
                 options.Password.RequireLowercase = false;
 
                 options.SignIn.RequireConfirmedEmail = true;
+
+
+                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
             })
                         .AddEntityFrameworkStores<AppDbContext>()
-                        .AddDefaultTokenProviders();
+                        .AddDefaultTokenProviders()
+                        .AddTokenProvider<CustomEmailConfirmationTokenProvider
+                                    <ApplicationUser>>("CustomEmailConfirmation");
 
 
-        // Set token life span to 5 hours
-        services.Configure<DataProtectionTokenProviderOptions>(o =>
+
+            // Set token life span to 5 hours
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
         o.TokenLifespan = TimeSpan.FromHours(5));
+
+
+
+            // Changes token lifespan of just the Email Confirmation Token type
+            services.Configure<CustomEmailConfirmationTokenProviderOptions>(o =>
+                    o.TokenLifespan = TimeSpan.FromDays(3));
 
             /*services.Configure<IdentityOptions>(options=> {
                 options.Password.RequiredLength = 6;
