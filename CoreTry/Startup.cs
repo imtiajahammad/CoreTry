@@ -31,7 +31,8 @@ namespace CoreTry
             services.AddDbContextPool<AppDbContext>(options => 
             options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
                 options.Password.RequiredLength = 4;
                 options.Password.RequiredUniqueChars = 0;
                 options.Password.RequireNonAlphanumeric = false;
@@ -41,7 +42,8 @@ namespace CoreTry
 
                 options.SignIn.RequireConfirmedEmail = true;
             })
-                        .AddEntityFrameworkStores<AppDbContext>();
+                        .AddEntityFrameworkStores<AppDbContext>()
+                        .AddDefaultTokenProviders();
 
             /*services.Configure<IdentityOptions>(options=> {
                 options.Password.RequiredLength = 6;
