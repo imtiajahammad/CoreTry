@@ -188,14 +188,14 @@ namespace CoreTry.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN,Super Admin")]
         public IActionResult ListUsers()
         {
             var users = _userManager.Users;
             return View(users);
         }
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN,Super Admin")]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -218,7 +218,7 @@ namespace CoreTry.Controllers
             return View(model);
         }
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN,Super Admin")]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
             var user = await _userManager.FindByIdAsync(model.Id);
