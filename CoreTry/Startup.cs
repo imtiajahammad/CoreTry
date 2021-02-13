@@ -85,6 +85,8 @@ namespace CoreTry
                 options.AddPolicy("EditRolePolicy",
                 policy => policy.AddRequirements(new ManageAdminRoleAndClaimsRequirement()));
 
+                options.InvokeHandlersAfterFailure = false;/*not to fail policy if it gets fail in one handler*/ 
+
                 options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("ADMIN,NGB-ADMIN"));
             });
