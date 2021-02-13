@@ -28,7 +28,8 @@ namespace CoreTry
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
+            services.AddDbContextPool<AppDbContext>(options => 
+            options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.Password.RequiredLength = 4;
@@ -37,6 +38,8 @@ namespace CoreTry
                 options.Password.RequireDigit = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
+
+                options.SignIn.RequireConfirmedEmail = true;
             })
                         .AddEntityFrameworkStores<AppDbContext>();
 
@@ -85,7 +88,7 @@ namespace CoreTry
                 options.AddPolicy("EditRolePolicy",
                 policy => policy.AddRequirements(new ManageAdminRoleAndClaimsRequirement()));
 
-                options.InvokeHandlersAfterFailure = false;/*not to fail policy if it gets fail in one handler*/ 
+                //options.InvokeHandlersAfterFailure = false;/*not to fail policy if it gets fail in one handler*/ 
 
                 options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("ADMIN,NGB-ADMIN"));

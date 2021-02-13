@@ -32,10 +32,10 @@ namespace CoreTry.Security
             {
                 context.Succeed(requirement);
             }
-            else
+            /*else
             {
                 context.Fail();
-            }
+            }*/
 
             return Task.CompletedTask;
         }
